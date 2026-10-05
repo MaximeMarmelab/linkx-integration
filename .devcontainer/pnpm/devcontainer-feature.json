@@ -1,0 +1,24 @@
+{
+  "id": "pnpm",
+  "version": "1.0.0",
+  "name": "PNPM",
+  "postCreateCommand": "pnpm install",
+  "installsAfter": ["ghcr.io/devcontainers/features/common-utils:1"],
+  "mounts": [
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-node-modules",
+      "target": "/workspaces/linkx-integration/node_modules"
+    },
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-pnpm-store",
+      "target": "/workspaces/linkx-integration/.pnpm-store"
+    },
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-pnpm",
+      "target": "/mnt/pnpm"
+    }
+  ]
+}
