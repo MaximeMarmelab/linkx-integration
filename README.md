@@ -13,6 +13,21 @@ make install
 make run
 ```
 
+Without make, use pnpm directly:
+
+```bash
+pnpm install
+pnpm run --filter @linkx-integration/cli run
+```
+
+To add a dependency to the CLI (`-D` for a dev dependency):
+
+```bash
+pnpm add --filter @linkx-integration/cli picocolors
+```
+
+pnpm records the version in the `catalog` of `pnpm-workspace.yaml` and writes `catalog:` in the package's `package.json`.
+
 | Command           | Runs                          | Purpose                                 |
 | ----------------- | ----------------------------- | --------------------------------------- |
 | `make install`    | `pnpm install`                | install dependencies                    |
