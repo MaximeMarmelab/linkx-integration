@@ -55,13 +55,13 @@ function extractPiece(moveInput: string): string {
         `The move "${moveInput}" is too short and does not contains the required information.`,
       );
     }
-    return moveInput[0] + moveInput[1];
+    return moveInput[0] + moveInput[1]?.toUpperCase();
   }
   throw new Error(`Piece ${moveInput[0]} not recognized.`);
 }
 
 function extractRotation(moveInput: string): number {
-  const rotationInput = moveInput.match(/r\d/);
+  const rotationInput = moveInput.match(/r\d/i);
   if (rotationInput && rotationInput[0]) {
     return Number.parseInt(rotationInput[0].charAt(1));
   }
@@ -71,7 +71,7 @@ function extractRotation(moveInput: string): number {
 function extractColumn(moveInput: string): number {
   const columnChar = moveInput[moveInput.length - 1];
   if (columnChar && /\d/.test(columnChar)) {
-    return Number.parseInt(columnChar);
+    return Number.parseInt(columnChar) - 1; // -1 to adjust between 0-starting index in js and 1-starting index in file
   }
   throw new Error(
     "The last character of a move must be a number corresponding to the column in which the piece is played.",
