@@ -9,14 +9,14 @@ Une partie s'écrit comme une suite de jetons courts, un par coup, dans l'ordre 
 ## Un coup
 
 ```text
-forme  [s]  [r|l + 1..3]  colonne
+forme  [m]  [r + 1..3]  colonne
 ```
 
 | Partie | Valeurs | Sens |
 | --- | --- | --- |
 | forme | `1` `2` `3I` `3L` `4S` `4T` `4L` | nombre de cases, puis silhouette |
-| miroir | `s` (facultatif) | retourne la pièce, **avant** la rotation |
-| rotation | `r1` `r2` `r3` / `l1` `l2` `l3` (facultatif) | quarts de tour horaires (`r`) ou antihoraires (`l`) |
+| miroir | `m` (facultatif) | retourne la pièce, **avant** la rotation |
+| rotation | `r1` `r2` `r3` (facultatif) | quarts de tour horaires (`r`) |
 | colonne | `1` à `9` | colonne de la case la plus à gauche de la pièce posée — toujours le dernier caractère |
 
 La pièce tombe ensuite dans la colonne : la ligne n'est jamais écrite.
@@ -42,7 +42,7 @@ Chaque joueur a deux exemplaires de chaque forme.
 | `3Ir11` | barre de trois debout en colonne 1 |
 | `4Tr24` | T pointe en haut, ancré en colonne 4 |
 | `4Lr32` | grand L tourné de trois quarts de tour horaires, ancré en colonne 2 |
-| `4Lsr27` | grand L retourné puis tourné d'un demi-tour, ancré en colonne 7 |
+| `4Lmr27` | grand L retourné puis tourné d'un demi-tour, ancré en colonne 7 |
 | `--` | tour passé, faute de coup légal |
 
 Le miroir puis la rotation, sur le grand L :
@@ -80,7 +80,6 @@ Une même pièce posée a une seule écriture canonique, la seule produite à l'
 | --- | --- | --- |
 | `2r23` | `23` | un demi-tour ne change pas un domino |
 | `1r27` | `17` | le mono ne tourne pas |
-| `2l13` | `2r13` | quart antihoraire → quart horaire équivalent |
 | `3Ls4` | `3Lr14` | le miroir du petit L est une rotation |
 | `4Ssr21` | `4Ss1` | demi-tour sans effet sur le S |
 
