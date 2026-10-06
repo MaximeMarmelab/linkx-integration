@@ -1,4 +1,4 @@
-import type { Color, Move } from "../game/move.ts";
+import type { Move } from "../game/move.ts";
 
 /**
  * Transform a string describing the state of the game into an ordered array of moves.
@@ -12,38 +12,33 @@ export function parseSaveFile(input?: string): Array<Move> {
   }
 
   const parts = input.split(" ");
-  let color: Color = "blue";
   return parts
     .map((moveInput, index) => {
-      if (index === 0 && /W/i.test(moveInput)) {
-        color = "white";
-      } else if (moveInput === "--") {
-        color = reverseColor(color);
+      // If Blue starts : first move is at index 0.
+      // If White starts : first move is at index 1 (index 0 is the "W")
+      const color = index % 2 === 0 ? "blue" : "white";
+
+      if (moveInput.toUpperCase() === "W") {
+        return undefined;
+      }
+
+      if (moveInput === "--") {
         return {
           skipped: true,
-        } as Move;
-      } else {
-        const unreversedColor = color;
-        color = reverseColor(color);
-
-        return {
-          skipped: false,
-          color: unreversedColor,
-          piece: extractPiece(moveInput),
-          column: extractColumn(moveInput),
-          rotation: extractRotation(moveInput),
-          mirrored: /m/i.test(moveInput),
+          color,
         } as Move;
       }
+
+      return {
+        skipped: false,
+        color,
+        piece: extractPiece(moveInput),
+        column: extractColumn(moveInput),
+        rotation: extractRotation(moveInput),
+        mirrored: /m/i.test(moveInput),
+      } as Move;
     })
     .filter((m) => !!m); // Necessary to exclude the undefined value from the white start flag if present
-}
-
-function reverseColor(color: Color): Color {
-  if (color === "white") {
-    return "blue";
-  }
-  return "white";
 }
 
 function extractPiece(moveInput: string): string {
