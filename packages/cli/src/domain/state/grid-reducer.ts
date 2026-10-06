@@ -3,11 +3,7 @@ import type { Grid } from "./grid.ts";
 
 import { moveToMatrix } from "../game/move-to-matrix.ts";
 
-export function gridReducer(state: Grid | null, action: Move): Grid {
-  if (!state) {
-    state = initGrid();
-  }
-
+export function gridReducer(state: Grid, action: Move): Grid {
   if (action.skipped) {
     return state;
   }
@@ -66,18 +62,4 @@ function calculateMinimumHeightOfPiece(
   }
 
   return minimumHeight;
-}
-
-function initGrid(): Grid {
-  const grid = [];
-
-  for (let i = 0; i < 9; i++) {
-    const column = [];
-    for (let j = 0; j < 9; j++) {
-      column.push(".");
-    }
-    grid.push(column);
-  }
-
-  return grid;
 }
