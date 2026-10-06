@@ -74,6 +74,6 @@ function extractColumn(moveInput: string): number {
     return Number.parseInt(columnChar);
   }
   throw new Error(
-    "The last char of a move must be a number corresponding to the column in which the piece is played.",
+    "The last character of a move must be a number corresponding to the column in which the piece is played.",
   );
 }

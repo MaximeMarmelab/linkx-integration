@@ -48,7 +48,7 @@ Chaque joueur a deux exemplaires de chaque forme.
 Le miroir puis la rotation, sur le grand L :
 
 ```text
-4L1     4Lr11    4Ls1     4Lsr21
+4L1     4Lr11    4Lm1     4Lmr21
 ███     ██       ███      █··
 █··     ·█       ··█      ███
         ·█
@@ -70,7 +70,7 @@ Les jetons se séparent par une espace, une virgule ou un `+`. Le `+` permet de 
 http://localhost:5173/?moves=4Lr32+4Ss3+4Lr32+3Ir12+3Ir13+3Ir14
 ```
 
-La casse est libre à la lecture (`4lsr23` vaut `4Lsr23`).
+La casse est libre à la lecture (`4lmr23` vaut `4Lmr23`).
 
 ## Écriture canonique
 
@@ -81,7 +81,7 @@ Une même pièce posée a une seule écriture canonique, la seule produite à l'
 | `2r23`   | `23`    | un demi-tour ne change pas un domino  |
 | `1r27`   | `17`    | le mono ne tourne pas                 |
 | `3Ls4`   | `3Lr14` | le miroir du petit L est une rotation |
-| `4Ssr21` | `4Ss1`  | demi-tour sans effet sur le S         |
+| `4Smr21` | `4Sm1`  | demi-tour sans effet sur le S         |
 
 Jetons canoniques possibles, ici en colonne 1 :
 
@@ -91,9 +91,9 @@ Jetons canoniques possibles, ici en colonne 1 :
 | `2`   | `21` `2r11`                                                     |
 | `3I`  | `3I1` `3Ir11`                                                   |
 | `3L`  | `3L1` `3Lr11` `3Lr21` `3Lr31`                                   |
-| `4S`  | `4S1` `4Sr11` `4Ss1` `4Ssr11`                                   |
+| `4S`  | `4S1` `4Sr11` `4Sm1` `4Smr11`                                   |
 | `4T`  | `4T1` `4Tr11` `4Tr21` `4Tr31`                                   |
-| `4L`  | `4L1` `4Lr11` `4Lr21` `4Lr31` `4Ls1` `4Lsr11` `4Lsr21` `4Lsr31` |
+| `4L`  | `4L1` `4Lr11` `4Lr21` `4Lr31` `4Lm1` `4Lmr11` `4Lmr21` `4Lmr31` |
 
 ## Passes
 
