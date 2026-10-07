@@ -231,7 +231,13 @@ const correspondenceTable = [
   },
 ];
 
-export function moveToMatrix(move: Move): Array<Array<number>> {
+/**
+ * Get a small matrix representing the piece with mirror and rotation applied.
+ * A cell value of 1 shows there is a block, 0 shows there isn't.
+ * @example [[0, 1], [1, 1]] for a 3L
+ * @param move A Move object to transform into a piece.
+ */
+export function getPieceShapeFromMove(move: Move): Array<Array<number>> {
   return correspondenceTable
     .filter((correspondenceEntry) => move.piece === correspondenceEntry.piece)
     .flatMap((correspondenceEntry) => correspondenceEntry.possibleMatrices)

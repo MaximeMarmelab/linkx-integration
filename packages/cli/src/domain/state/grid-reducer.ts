@@ -1,7 +1,7 @@
 import type { Move } from "../game/move.ts";
 import type { Grid } from "./grid.ts";
 
-import { moveToMatrix } from "../game/move-to-matrix.ts";
+import { getPieceShapeFromMove } from "../game/move-to-matrix.ts";
 
 export function gridReducer(state: Grid, action: Move): Grid {
   if (action.skipped) {
@@ -11,15 +11,15 @@ export function gridReducer(state: Grid, action: Move): Grid {
   const newState: Grid = [];
   state.forEach((col) => newState.push([...col]));
 
-  const moveMatrix = moveToMatrix(action);
+  const pieceShape = getPieceShapeFromMove(action);
   const moveLeftMostColumn = action.column ?? 0;
   const minimumHeight = calculateMinimumHeightOfPiece(
     state,
     moveLeftMostColumn,
-    moveMatrix,
+    pieceShape,
   );
 
-  moveMatrix.forEach((column, xIndex) => {
+  pieceShape.forEach((column, xIndex) => {
     column.forEach((cell, yIndex) => {
       if (cell === 1) {
         const gridX = moveLeftMostColumn + xIndex;
