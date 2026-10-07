@@ -28,6 +28,6 @@ if (inputPath) {
       console.error("Couldn't read file. " + err);
     });
 } else {
-  const grid = runGame();
-  displayGame(grid);
+  const game = runGame();
+  displayGame(game);
 }

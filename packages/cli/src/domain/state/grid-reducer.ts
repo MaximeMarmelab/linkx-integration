@@ -1,7 +1,7 @@
 import type { Move } from "../game/move.ts";
 import type { Grid } from "./grid.ts";
 
-import { getPieceShapeFromMove } from "../game/move-to-matrix.ts";
+import { getPieceShapeFromMove } from "../game/piece-shape-from-move.ts";
 
 export function gridReducer(state: Grid, action: Move): Grid {
   if (action.skipped) {
