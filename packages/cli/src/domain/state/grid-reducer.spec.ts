@@ -1,8 +1,11 @@
 import type { Move } from "../game/move";
 
+import { initGrid } from "../game/run-game";
 import { gridReducer } from "./grid-reducer";
 
 describe("grid-reducer", () => {
+  const emptyGrid = initGrid();
+
   it("should place pieces on bottom of the grid", () => {
     const move = {
       skipped: false,
@@ -12,7 +15,7 @@ describe("grid-reducer", () => {
       rotation: 2,
       mirrored: false,
     } as Move;
-    const grid = gridReducer(null, move);
+    const grid = gridReducer(emptyGrid, move);
 
     expect(grid[6]?.at(0)).toBe("B");
     expect(grid[7]?.at(0)).toBe("B");
@@ -39,7 +42,7 @@ describe("grid-reducer", () => {
       rotation: 0,
       mirrored: false,
     } as Move;
-    const firstStep = gridReducer(null, firstMove);
+    const firstStep = gridReducer(emptyGrid, firstMove);
     const grid = gridReducer(firstStep, secondMove);
 
     expect(grid).toBeTruthy();
@@ -61,7 +64,7 @@ describe("grid-reducer", () => {
       rotation: 3,
       mirrored: true,
     } as Move;
-    const grid = gridReducer(null, move);
+    const grid = gridReducer(emptyGrid, move);
 
     expect(grid).toBeTruthy();
     expect(grid[7]?.at(0)).toBe("B");
@@ -88,7 +91,7 @@ describe("grid-reducer", () => {
       mirrored: false,
     } as Move;
 
-    const firstStep = gridReducer(null, firstMove);
+    const firstStep = gridReducer(emptyGrid, firstMove);
     const grid = gridReducer(firstStep, secondMove);
 
     expect(grid).toBeTruthy();

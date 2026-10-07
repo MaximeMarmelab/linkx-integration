@@ -30,7 +30,7 @@ function displayGrid(stringifiedState: string): void {
   displayGame(grid);
 }
 
-function initGrid(): Grid {
+export function initGrid(): Grid {
   const grid = [];
 
   for (let i = 0; i < 9; i++) {
