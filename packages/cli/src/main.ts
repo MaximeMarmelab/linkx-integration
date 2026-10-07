@@ -1,6 +1,8 @@
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { argv } from "node:process";
 
+import { displayGame } from "./cli/display-game.ts";
 import { runGame } from "./domain/game/run-game.ts";
 
 let inputPath: string | undefined;
@@ -16,4 +18,16 @@ argv.forEach((arg) => {
   }
 });
 
-runGame(inputPath);
+if (inputPath) {
+  readFile(inputPath, "utf8")
+    .then((fileContent) => {
+      const grid = runGame(fileContent);
+      displayGame(grid);
+    })
+    .catch((err) => {
+      console.error("Couldn't read file. " + err);
+    });
+} else {
+  const grid = runGame();
+  displayGame(grid);
+}
