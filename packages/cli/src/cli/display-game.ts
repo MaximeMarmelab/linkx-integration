@@ -32,7 +32,7 @@ export function getGridAsStrings(grid: Grid): Array<string> {
     });
   });
 
-  return rows;
+  return rows.map((r) => r + " ");
 }
 
 /**
@@ -43,7 +43,13 @@ function addRemainingPiecesToRows(
   rows: Array<string>,
   availablePieces: Array<PieceCount>,
 ): Array<string> {
-  const updatedRows = [...rows, "         ", "         ", "         "];
+  const updatedRows = [
+    ...rows,
+    "0 1 2 3 4 5 6 7 8  ",
+    "                   ",
+    "                   ",
+    "                   ",
+  ];
 
   const remainingBluePieces = availablePieces.filter((p) => p.color === "blue");
   const remainingWhitePieces = availablePieces.filter(
@@ -70,15 +76,19 @@ function addRemainingPiecesToRows(
   );
 
   updatedRows[0] += `   ${chalk.blueBright("BLUE")} stock:  ${blueTotal} pieces`;
-  updatedRows[1] += `   1    2    3    4    5    6   7`;
+  updatedRows[1] += `    1       2       3       4       5       6       7`;
   bluePiecesStrings.forEach((str, index) => {
     updatedRows[2 + index] += str;
   });
 
-  updatedRows[6] += `   ${chalk.white("WHITE")} stock:  ${whiteTotal} pieces`;
-  updatedRows[7] += `   1    2    3    4    5    6   7`;
+  updatedRows[6] += chalk.underlineWhiteBright(
+    "                                           ",
+  );
+
+  updatedRows[7] += `   ${chalk.white("WHITE")} stock:  ${whiteTotal} pieces`;
+  updatedRows[8] += `    1       2       3       4       5       6       7`;
   whitePiecesStrings.forEach((str, index) => {
-    updatedRows[8 + index] += str;
+    updatedRows[9 + index] += str;
   });
 
   return updatedRows;
@@ -107,13 +117,13 @@ function generateAvailablePiecesStrings(
 
     if (pieceCount.count === 2) {
       generatedStrings[3] +=
-        color === "blue" ? chalk.blueBright("◉◉ ") : chalk.white("◉◉ ");
+        color === "blue" ? chalk.blueBright("  ◉◉  ") : chalk.white("  ◉◉  ");
     } else if (pieceCount.count === 1) {
       generatedStrings[3] +=
-        color === "blue" ? chalk.blueBright("◉○ ") : chalk.white("◉○ ");
+        color === "blue" ? chalk.blueBright("  ◉○  ") : chalk.white("  ◉○  ");
     } else {
       generatedStrings[3] +=
-        color === "blue" ? chalk.blueBright("○○ ") : chalk.white("○○ ");
+        color === "blue" ? chalk.blueBright("  ○○  ") : chalk.white("  ○○  ");
     }
 
     generatedStrings.forEach(
@@ -127,20 +137,20 @@ function generateAvailablePiecesStrings(
 function stringCellToChalkDisplay(cell: string): string {
   switch (cell) {
     case "W":
-      return chalk.bgWhite(" ");
+      return chalk.bgWhite("  ");
     case "B":
-      return chalk.bgBlueBright(" ");
+      return chalk.bgBlueBright("  ");
     case ".":
     default:
-      return chalk.grey(".");
+      return chalk.grey("⚬ ");
   }
 }
 
 function intCellToChalkDisplay(cell: number, color: Color): string {
   if (color === "blue" && cell === 1) {
-    return chalk.bgBlueBright(" ");
+    return chalk.bgBlueBright("  ");
   } else if (color === "white" && cell === 1) {
-    return chalk.bgWhite(" ");
+    return chalk.bgWhite("  ");
   }
-  return chalk.grey(".");
+  return chalk.grey("⚬ ");
 }
