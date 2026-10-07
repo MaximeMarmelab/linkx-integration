@@ -1,16 +1,25 @@
 import type { Grid } from "../state/grid.ts";
+import type { Game, PieceCount } from "./game.ts";
+import type { Piece } from "./move.ts";
 
+import { availablePiecesReducer } from "../state/available-pieces-reducer.ts";
 import { parseSaveFile } from "../state/gamestate-parser.ts";
 import { gridReducer } from "../state/grid-reducer.ts";
 
-export function runGame(stringifiedState?: string): Grid {
+export function runGame(stringifiedState?: string): Game {
   const moves = parseSaveFile(stringifiedState);
   let grid = initGrid();
+  let availablePieces = initAvailablePieces();
+
   moves.forEach((move) => {
     grid = gridReducer(grid, move);
+    availablePieces = availablePiecesReducer(availablePieces, move);
   });
 
-  return grid;
+  return {
+    grid,
+    availablePieces,
+  };
 }
 
 export function initGrid(): Grid {
@@ -25,4 +34,15 @@ export function initGrid(): Grid {
   }
 
   return grid;
+}
+
+export function initAvailablePieces(): Array<PieceCount> {
+  return (["1", "2", "3I", "3L", "4S", "4T", "4L"] as Array<Piece>).flatMap(
+    (piece: Piece) => {
+      return [
+        { count: 2, piece, color: "blue" },
+        { count: 2, piece, color: "white" },
+      ];
+    },
+  );
 }
