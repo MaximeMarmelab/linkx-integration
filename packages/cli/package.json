@@ -6,7 +6,9 @@
   "scripts": {
     "run": "node src/main.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "chalk": "catalog:"
+  },
   "devDependencies": {
     "@types/node": "catalog:",
     "typescript": "catalog:",

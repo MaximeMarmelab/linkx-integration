@@ -6,6 +6,7 @@ allowBuilds:
 
 catalog:
   "@types/node": ^26.6.4
+  chalk: ^6.0.1
   husky: ^9.1.7
   oxfmt: ^0.53.0
   oxlint: ^1.86.0

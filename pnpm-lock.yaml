@@ -167,6 +167,9 @@ catalogs:
     '@types/node':
       specifier: ^26.6.4
       version: 26.6.4
+    chalk:
+      specifier: ^6.0.1
+      version: 6.0.1
     husky:
       specifier: ^9.1.7
       version: 9.1.7
@@ -210,6 +213,10 @@ importers:
         version: 5.0.3(@types/node@26.6.4)(vite@8.3.2(@types/node@26.6.4))
 
   packages/cli:
+    dependencies:
+      chalk:
+        specifier: 'catalog:'
+        version: 6.0.1
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -762,6 +769,10 @@ packages:
   chai@6.3.0:
     resolution: {integrity: sha512-XWAtwJ6OHO+tj0EKCs0Y2UamnyOxseZWltU4x2U2wh8g4AigdjwvtUjvLP2tqkA/avxHEtzxNaqGq/YGNwckKg==}
     engines: {node: '>=18'}
+
+  chalk@6.0.1:
+    resolution: {integrity: sha512-/Ce6KNm3vIbWdMlNna6RVIZ/ICQxnJxCicet5LBKK9ZffBkqzDw0xh9EiKSljdRtiIQ1S1z4YgcscUUGzNCWrA==}
+    engines: {node: '>=22'}
 
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
@@ -1327,6 +1338,8 @@ snapshots:
   assertion-error@2.0.1: {}
 
   chai@6.3.0: {}
+
+  chalk@6.0.1: {}
 
   detect-libc@2.1.2: {}
 
