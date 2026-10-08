@@ -149,7 +149,7 @@ describe("grid-reducer", () => {
       color: "blue",
       piece: "4L",
       column: 1,
-      rotation: 0,
+      rotation: 2,
       mirrored: false,
     };
 
@@ -176,7 +176,7 @@ describe("grid-reducer", () => {
     }).toThrow("floating");
 
     expect(() => {
-      console.table(gridReducer(emptyGrid, move));
+      gridReducer(emptyGrid, move);
     }).toThrow("floating");
   });
 });

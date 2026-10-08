@@ -14,7 +14,7 @@ export function gridReducer(state: Grid, action: Move): Grid {
   const pieceShape = getPieceShapeFromMove(action);
   const moveLeftMostColumn = action.column ?? 0;
   const minimumHeight = calculateMinimumHeightOfPiece(
-    state,
+    newState,
     moveLeftMostColumn,
     pieceShape,
   );
@@ -42,21 +42,12 @@ export function gridReducer(state: Grid, action: Move): Grid {
       }
     });
 
-    const blocksBelowPiece = state[gridX]?.splice(0, minimumHeight) ?? [];
-    const blocksWithinPiece =
-      state[gridX]?.splice(minimumHeight, minimumHeight + column.length) ?? [];
-    const blockFloatingWithinPiece = hasBlockFloatingWithinPieceCol(
-      blocksWithinPiece,
-      gridX + 1,
+    validateNoFloatingBlockInColumn(
+      newState[gridX],
+      column,
+      minimumHeight,
+      gridX,
     );
-    if (
-      blocksBelowPiece.find((cell) => cell === ".") ||
-      blockFloatingWithinPiece
-    ) {
-      throw new Error(
-        `The proposed piece would be floating in column ${gridX + 1}.`,
-      );
-    }
   });
 
   return newState;
@@ -110,9 +101,35 @@ function hasBlockFloatingWithinPieceCol(
 ) {
   let hasSupport = true;
   for (let cell of blocksWithinPiece) {
-    if (!hasSupport && cell !== ".") {
-      throw new Error(`The piece would be floating in column ${columnIndex}`);
+    const isBlock = /[wb]/i.test(cell);
+    if (!hasSupport && isBlock) {
+      throw new Error(
+        `The proposed piece would be floating in column ${columnIndex}`,
+      );
     }
-    hasSupport = cell !== ".";
+    hasSupport = isBlock;
+  }
+}
+
+function validateNoFloatingBlockInColumn(
+  gridColumn: Array<string> | undefined,
+  pieceColumn: Array<number>,
+  minimumHeight: number,
+  columnIndex: number,
+) {
+  const blocksBelowPiece = gridColumn?.slice(0, minimumHeight) ?? [];
+  const blocksWithinPiece =
+    gridColumn?.slice(minimumHeight, minimumHeight + pieceColumn.length) ?? [];
+  const blockFloatingWithinPiece = hasBlockFloatingWithinPieceCol(
+    blocksWithinPiece,
+    columnIndex + 1,
+  );
+  if (
+    blocksBelowPiece.find((cell) => cell === ".") ||
+    blockFloatingWithinPiece
+  ) {
+    throw new Error(
+      `The proposed piece would be floating in column ${columnIndex + 1}.`,
+    );
   }
 }
