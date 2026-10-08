@@ -7,14 +7,14 @@ describe("grid-reducer", () => {
   const emptyGrid = initGrid();
 
   it("should place pieces on bottom of the grid", () => {
-    const move = {
+    const move: Move = {
       skipped: false,
       color: "blue",
       piece: "4L",
       column: 6,
       rotation: 3,
       mirrored: false,
-    } as Move;
+    };
     const grid = gridReducer(emptyGrid, move);
 
     expect(grid[6]?.at(0)).toBe("B");
@@ -26,22 +26,22 @@ describe("grid-reducer", () => {
   });
 
   it("should place pieces on top of other pieces", () => {
-    const firstMove = {
+    const firstMove: Move = {
       skipped: false,
       color: "blue",
       piece: "4L",
       column: 6,
       rotation: 0,
       mirrored: true,
-    } as Move;
-    const secondMove = {
+    };
+    const secondMove: Move = {
       skipped: false,
       color: "white",
       piece: "1",
       column: 7,
       rotation: 0,
       mirrored: false,
-    } as Move;
+    };
     const firstStep = gridReducer(emptyGrid, firstMove);
     const grid = gridReducer(firstStep, secondMove);
 
@@ -56,22 +56,22 @@ describe("grid-reducer", () => {
   });
 
   it("should rotate and mirror pieces", () => {
-    const firstMove = {
+    const firstMove: Move = {
       skipped: false,
       color: "white",
       piece: "2",
       column: 7,
       rotation: 0,
       mirrored: false,
-    } as Move;
-    const secondMove = {
+    };
+    const secondMove: Move = {
       skipped: false,
       color: "blue",
       piece: "4L",
       column: 6,
       rotation: 2,
       mirrored: true,
-    } as Move;
+    };
     let grid = gridReducer(emptyGrid, firstMove);
     grid = gridReducer(grid, secondMove);
 
@@ -83,22 +83,22 @@ describe("grid-reducer", () => {
   });
 
   it("should place pieces on top of complex relief", () => {
-    const firstMove = {
+    const firstMove: Move = {
       skipped: false,
       color: "white",
       piece: "4T",
       column: 2,
       rotation: 2,
       mirrored: false,
-    } as Move;
-    const secondMove = {
+    };
+    const secondMove: Move = {
       skipped: false,
       color: "blue",
       piece: "3L",
       column: 4,
       rotation: 2,
       mirrored: false,
-    } as Move;
+    };
 
     const firstStep = gridReducer(emptyGrid, firstMove);
     const grid = gridReducer(firstStep, secondMove);

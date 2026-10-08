@@ -23,9 +23,7 @@ export function runGame(stringifiedState?: string): Game {
     turnOfPlayer,
   };
 
-  moves.forEach((move) => (game = gameReducer(game, move)));
-
-  return game;
+  return moves.reduce(gameReducer, game);
 }
 
 export function gameReducer(game: Game, move: Move): Game {
