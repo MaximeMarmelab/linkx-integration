@@ -5,14 +5,14 @@ import { availablePiecesReducer } from "./available-pieces-reducer";
 
 describe("available-pieces-reducer", () => {
   const allPieces = initAvailablePieces();
-  const move = {
+  const move: Move = {
     skipped: false,
     color: "blue",
     piece: "4L",
     column: 6,
     rotation: 2,
     mirrored: false,
-  } as Move;
+  };
 
   it("should substract when using a piece", () => {
     const remainingPieces = availablePiecesReducer(allPieces, move);

@@ -8,8 +8,7 @@ export function gridReducer(state: Grid, action: Move): Grid {
     return state;
   }
 
-  const newState: Grid = [];
-  state.forEach((col) => newState.push([...col]));
+  const newState = copyGridAndRemoveLastMove(state);
 
   const pieceShape = getPieceShapeFromMove(action);
   const moveLeftMostColumn = action.column ?? 0;
@@ -26,7 +25,7 @@ export function gridReducer(state: Grid, action: Move): Grid {
         const gridY = minimumHeight + yIndex;
 
         if (newState[gridX]) {
-          newState[gridX][gridY] = action.color === "blue" ? "B" : "W";
+          newState[gridX][gridY] = action.color === "blue" ? "B" : "W"; // The last move is in uppercase letters
         }
       }
     });
@@ -62,4 +61,12 @@ function calculateMinimumHeightOfPiece(
   }
 
   return minimumHeight;
+}
+
+function copyGridAndRemoveLastMove(state: Grid): Grid {
+  return state.map((col) => {
+    return col.map((cell) => {
+      return cell.toLowerCase();
+    });
+  });
 }

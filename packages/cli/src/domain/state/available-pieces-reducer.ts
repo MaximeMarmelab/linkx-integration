@@ -12,7 +12,7 @@ export function availablePiecesReducer(
     ) {
       if (pieceCount.count === 0) {
         throw new Error(
-          `The piece ${action.piece} was used when not available`,
+          `The piece ${action.piece} is all used up and not available.`,
         );
       }
       return {

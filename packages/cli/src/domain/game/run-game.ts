@@ -1,6 +1,6 @@
 import type { Grid } from "../state/grid.ts";
 import type { Game, PieceCount } from "./game.ts";
-import type { Piece } from "./move.ts";
+import type { Color, Move, Piece } from "./move.ts";
 
 import { availablePiecesReducer } from "../state/available-pieces-reducer.ts";
 import { parseSaveFile } from "../state/gamestate-parser.ts";
@@ -8,17 +8,24 @@ import { gridReducer } from "../state/grid-reducer.ts";
 
 export function runGame(stringifiedState?: string): Game {
   const moves = parseSaveFile(stringifiedState);
-  let grid = initGrid();
-  let availablePieces = initAvailablePieces();
+  let game: Game = {
+    grid: initGrid(),
+    availablePieces: initAvailablePieces(),
+    turnOfPlayer:
+      stringifiedState && /^W/i.test(stringifiedState) ? "white" : "blue",
+  };
 
-  moves.forEach((move) => {
-    grid = gridReducer(grid, move);
-    availablePieces = availablePiecesReducer(availablePieces, move);
-  });
+  return moves.reduce(gameReducer, game);
+}
 
+export function gameReducer(game: Game, move: Move): Game {
+  if (move.color !== game.turnOfPlayer) {
+    throw new Error("This is not your turn to play.");
+  }
   return {
-    grid,
-    availablePieces,
+    grid: gridReducer(game.grid, move),
+    availablePieces: availablePiecesReducer(game.availablePieces, move),
+    turnOfPlayer: reverseColor(move.color),
   };
 }
 
@@ -45,4 +52,8 @@ export function initAvailablePieces(): Array<PieceCount> {
       ];
     },
   );
+}
+
+function reverseColor(color: Color) {
+  return color === "blue" ? "white" : "blue";
 }
