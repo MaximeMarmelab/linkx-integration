@@ -1,10 +1,11 @@
 import type { Grid } from "../state/grid.ts";
-import type { Color, Piece } from "./move.ts";
+import type { Color, Move, Piece } from "./move.ts";
 
 export type Game = {
   grid: Grid;
   availablePieces: Array<PieceCount>;
   turnOfPlayer: Color;
+  lastMove?: Move;
 };
 
 export type PieceCount = {
