@@ -112,4 +112,34 @@ describe("grid-reducer", () => {
     expect(grid[5]?.at(0)).toBe("B");
     expect(grid[5]?.at(1)).toBe("B");
   });
+
+  it("should throw when a piece goes out of the grid", () => {
+    const verticalMove: Move = {
+      skipped: false,
+      color: "white",
+      piece: "3I",
+      column: 2,
+      rotation: 1,
+      mirrored: false,
+    };
+    const horizontalMove: Move = {
+      skipped: false,
+      color: "blue",
+      piece: "3I",
+      column: 8,
+      rotation: 0,
+      mirrored: false,
+    };
+
+    expect(() => {
+      let grid = gridReducer(emptyGrid, verticalMove);
+      grid = gridReducer(grid, verticalMove);
+      grid = gridReducer(grid, verticalMove);
+      gridReducer(grid, verticalMove); // This one goes out of bonds
+    }).toThrow("out of bonds");
+
+    expect(() => {
+      gridReducer(emptyGrid, horizontalMove);
+    }).toThrow("out of bonds");
+  });
 });

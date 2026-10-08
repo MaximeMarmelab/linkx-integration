@@ -1,12 +1,15 @@
 import chalk from "chalk";
 
-import type { Game, PieceCount } from "../domain/game/game.ts";
 import type { Color } from "../domain/game/move.ts";
 import type { Grid } from "../domain/state/grid.ts";
 
+import {
+  GRID_MAX_HEIGHT,
+  type Game,
+  type PieceCount,
+} from "../domain/game/game.ts";
 import { getPieceShapeFromMove } from "../domain/game/piece-shape-from-move.ts";
 
-const GRID_MAX_HEIGHT = 8;
 const PIECE_MAX_HEIGHT = 3;
 
 export function displayGame(game: Game) {
