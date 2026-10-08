@@ -49,22 +49,22 @@ const correspondenceTable = [
         mirrored: [false, true],
         matrix: [
           [1, 1],
-          [0, 1],
+          [1, 0],
         ],
       },
       {
         rotations: [1],
         mirrored: [false, true],
         matrix: [
-          [0, 1],
           [1, 1],
+          [0, 1],
         ],
       },
       {
         rotations: [2],
         mirrored: [false, true],
         matrix: [
-          [1, 0],
+          [0, 1],
           [1, 1],
         ],
       },
@@ -72,8 +72,8 @@ const correspondenceTable = [
         rotations: [3],
         mirrored: [false, true],
         matrix: [
-          [1, 1],
           [1, 0],
+          [1, 1],
         ],
       },
     ],
@@ -85,34 +85,34 @@ const correspondenceTable = [
         rotations: [0, 2],
         mirrored: [false],
         matrix: [
-          [1, 1, 0],
           [0, 1, 1],
+          [1, 1, 0],
         ],
       },
       {
         rotations: [1, 3],
         mirrored: [false],
         matrix: [
-          [0, 1],
-          [1, 1],
           [1, 0],
+          [1, 1],
+          [0, 1],
         ],
       },
       {
         rotations: [0, 2],
         mirrored: [true],
         matrix: [
-          [0, 1, 1],
           [1, 1, 0],
+          [0, 1, 1],
         ],
       },
       {
         rotations: [1, 3],
         mirrored: [true],
         matrix: [
-          [1, 0],
-          [1, 1],
           [0, 1],
+          [1, 1],
+          [1, 0],
         ],
       },
     ],
@@ -133,8 +133,8 @@ const correspondenceTable = [
         rotations: [1],
         mirrored: [false, true],
         matrix: [
-          [0, 1, 0],
           [1, 1, 1],
+          [0, 1, 0],
         ],
       },
       {
@@ -150,8 +150,8 @@ const correspondenceTable = [
         rotations: [3],
         mirrored: [false, true],
         matrix: [
-          [1, 1, 1],
           [0, 1, 0],
+          [1, 1, 1],
         ],
       },
     ],
@@ -164,8 +164,8 @@ const correspondenceTable = [
         mirrored: [false],
         matrix: [
           [1, 1],
-          [0, 1],
-          [0, 1],
+          [1, 0],
+          [1, 0],
         ],
       },
       {
@@ -173,15 +173,15 @@ const correspondenceTable = [
         mirrored: [false],
         matrix: [
           [1, 1, 1],
-          [1, 0, 0],
+          [0, 0, 1],
         ],
       },
       {
         rotations: [2],
         mirrored: [false],
         matrix: [
-          [1, 0],
-          [1, 0],
+          [0, 1],
+          [0, 1],
           [1, 1],
         ],
       },
@@ -189,7 +189,7 @@ const correspondenceTable = [
         rotations: [3],
         mirrored: [false],
         matrix: [
-          [0, 0, 1],
+          [1, 0, 0],
           [1, 1, 1],
         ],
       },
@@ -197,8 +197,8 @@ const correspondenceTable = [
         rotations: [0],
         mirrored: [true],
         matrix: [
-          [0, 1],
-          [0, 1],
+          [1, 0],
+          [1, 0],
           [1, 1],
         ],
       },
@@ -207,7 +207,7 @@ const correspondenceTable = [
         mirrored: [true],
         matrix: [
           [1, 1, 1],
-          [0, 0, 1],
+          [1, 0, 0],
         ],
       },
       {
@@ -215,16 +215,16 @@ const correspondenceTable = [
         mirrored: [true],
         matrix: [
           [1, 1],
-          [1, 0],
-          [1, 0],
+          [0, 1],
+          [0, 1],
         ],
       },
       {
         rotations: [3],
         mirrored: [true],
         matrix: [
-          [1, 0, 0],
           [1, 1, 1],
+          [1, 0, 0],
         ],
       },
     ],

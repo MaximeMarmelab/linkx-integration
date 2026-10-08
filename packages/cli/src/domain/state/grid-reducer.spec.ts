@@ -12,15 +12,15 @@ describe("grid-reducer", () => {
       color: "blue",
       piece: "4L",
       column: 6,
-      rotation: 2,
+      rotation: 3,
       mirrored: false,
     } as Move;
     const grid = gridReducer(emptyGrid, move);
 
     expect(grid[6]?.at(0)).toBe("B");
     expect(grid[7]?.at(0)).toBe("B");
-    expect(grid[8]?.at(0)).toBe("B");
-    expect(grid[8]?.at(1)).toBe("B");
+    expect(grid[7]?.at(1)).toBe("B");
+    expect(grid[7]?.at(2)).toBe("B");
     // ........B
     // ......BBB
   });
@@ -31,7 +31,7 @@ describe("grid-reducer", () => {
       color: "blue",
       piece: "4L",
       column: 6,
-      rotation: 2,
+      rotation: 0,
       mirrored: true,
     } as Move;
     const secondMove = {
@@ -46,31 +46,42 @@ describe("grid-reducer", () => {
     const grid = gridReducer(firstStep, secondMove);
 
     expect(grid).toBeTruthy();
-    expect(grid[6]?.at(1)).toBe("B");
+    console.table(grid);
+    expect(grid[6]?.at(1)).toBe(".");
     expect(grid[7]?.at(0)).toBe("B");
     expect(grid[7]?.at(1)).toBe("W");
     expect(grid[8]?.at(0)).toBe("B");
-    expect(grid[8]?.at(1)).toBe(".");
+    expect(grid[8]?.at(1)).toBe("B");
     // ......BW.
     // ......BBB
   });
 
   it("should rotate and mirror pieces", () => {
-    const move = {
+    const firstMove = {
+      skipped: false,
+      color: "white",
+      piece: "2",
+      column: 7,
+      rotation: 0,
+      mirrored: false,
+    } as Move;
+    const secondMove = {
       skipped: false,
       color: "blue",
       piece: "4L",
-      column: 7,
-      rotation: 3,
+      column: 6,
+      rotation: 2,
       mirrored: true,
     } as Move;
-    const grid = gridReducer(emptyGrid, move);
+    let grid = gridReducer(emptyGrid, firstMove);
+    grid = gridReducer(grid, secondMove);
 
     expect(grid).toBeTruthy();
-    expect(grid[7]?.at(0)).toBe("B");
-    expect(grid[8]?.at(0)).toBe("B");
+    console.table(grid);
+    expect(grid[6]?.at(0)).toBe("B");
+    expect(grid[6]?.at(1)).toBe("B");
+    expect(grid[7]?.at(1)).toBe("B");
     expect(grid[8]?.at(1)).toBe("B");
-    expect(grid[8]?.at(2)).toBe("B");
   });
 
   it("should place pieces on top of complex relief", () => {
@@ -87,7 +98,7 @@ describe("grid-reducer", () => {
       color: "blue",
       piece: "3L",
       column: 4,
-      rotation: 1,
+      rotation: 2,
       mirrored: false,
     } as Move;
 
