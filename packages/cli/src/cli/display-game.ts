@@ -115,7 +115,11 @@ function generateAvailablePiecesStrings(
     for (let x = 0; x < PIECE_MAX_HEIGHT; x++) {
       for (let y = 0; y < PIECE_MAX_HEIGHT; y++) {
         const cellValue = pieceShape[x]?.at(y) ?? 0;
-        generatedStrings[y] += intCellToChalkDisplay(cellValue, color);
+        const affectedRow = PIECE_MAX_HEIGHT - 1 - y;
+        generatedStrings[affectedRow] += intCellToChalkDisplay(
+          cellValue,
+          color,
+        );
       }
     }
 

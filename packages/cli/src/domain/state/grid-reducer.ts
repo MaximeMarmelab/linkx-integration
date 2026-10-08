@@ -14,15 +14,16 @@ export function gridReducer(state: Grid, action: Move): Grid {
   const pieceShape = getPieceShapeFromMove(action);
   const moveLeftMostColumn = action.column ?? 0;
   const minimumHeight = calculateMinimumHeightOfPiece(
-    state,
+    newState,
     moveLeftMostColumn,
     pieceShape,
   );
 
   pieceShape.forEach((column, xIndex) => {
+    const gridX = moveLeftMostColumn + xIndex;
+
     column.forEach((cell, yIndex) => {
       if (cell === 1) {
-        const gridX = moveLeftMostColumn + xIndex;
         const gridY = minimumHeight + yIndex;
         if (gridX > 8) {
           throw new Error(
@@ -40,6 +41,13 @@ export function gridReducer(state: Grid, action: Move): Grid {
         }
       }
     });
+
+    validateNoFloatingBlockInColumn(
+      newState[gridX],
+      column,
+      minimumHeight,
+      gridX,
+    );
   });
 
   return newState;
@@ -85,4 +93,43 @@ function copyGridAndRemoveLastMove(state: Grid): Grid {
       return cell.toLowerCase();
     });
   });
+}
+
+function hasBlockFloatingWithinPieceCol(
+  blocksWithinPiece: string[],
+  columnIndex: number,
+) {
+  let hasSupport = true;
+  for (let cell of blocksWithinPiece) {
+    const isBlock = /[wb]/i.test(cell);
+    if (!hasSupport && isBlock) {
+      throw new Error(
+        `The proposed piece would be floating in column ${columnIndex}`,
+      );
+    }
+    hasSupport = isBlock;
+  }
+}
+
+function validateNoFloatingBlockInColumn(
+  gridColumn: Array<string> | undefined,
+  pieceColumn: Array<number>,
+  minimumHeight: number,
+  columnIndex: number,
+) {
+  const blocksBelowPiece = gridColumn?.slice(0, minimumHeight) ?? [];
+  const blocksWithinPiece =
+    gridColumn?.slice(minimumHeight, minimumHeight + pieceColumn.length) ?? [];
+  const blockFloatingWithinPiece = hasBlockFloatingWithinPieceCol(
+    blocksWithinPiece,
+    columnIndex + 1,
+  );
+  if (
+    blocksBelowPiece.find((cell) => cell === ".") ||
+    blockFloatingWithinPiece
+  ) {
+    throw new Error(
+      `The proposed piece would be floating in column ${columnIndex + 1}.`,
+    );
+  }
 }
