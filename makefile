@@ -4,7 +4,7 @@ help:									## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 install:
-	pnpm install
+	@pnpm install
 
 lint: generate
 	@pnpm lint:apply
@@ -23,4 +23,4 @@ test-watch:
 	@pnpm test:watch
 
 run:
-	pnpm run --filter @linkx-integration/cli run --file=$(file)
+	@pnpm --filter @linkx-integration/cli run run --file=$(file)
