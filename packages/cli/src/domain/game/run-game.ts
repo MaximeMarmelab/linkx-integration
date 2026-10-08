@@ -34,6 +34,7 @@ export function gameReducer(game: Game, move: Move): Game {
     grid: gridReducer(game.grid, move),
     availablePieces: availablePiecesReducer(game.availablePieces, move),
     turnOfPlayer: reverseColor(move.color),
+    lastMove: move,
   };
 }
 

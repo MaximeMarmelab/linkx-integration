@@ -1,4 +1,4 @@
-import type { Move } from "./move.ts";
+import type { Move, Piece } from "./move.ts";
 
 const correspondenceTable = [
   {
@@ -133,8 +133,8 @@ const correspondenceTable = [
         rotations: [1],
         mirrored: [false, true],
         matrix: [
-          [1, 1, 1],
           [0, 1, 0],
+          [1, 1, 1],
         ],
       },
       {
@@ -150,8 +150,8 @@ const correspondenceTable = [
         rotations: [3],
         mirrored: [false, true],
         matrix: [
-          [0, 1, 0],
           [1, 1, 1],
+          [0, 1, 0],
         ],
       },
     ],
@@ -248,3 +248,19 @@ export function getPieceShapeFromMove(move: Move): Array<Array<number>> {
     )
     .flatMap((matrix) => matrix.matrix);
 }
+
+export function getPossibleShapesForPiece(piece: Piece): PossibleShape[] {
+  const correspondenceEntry = correspondenceTable.find(
+    (entry) => entry.piece === piece,
+  );
+  if (!correspondenceEntry) {
+    throw new Error(`No correspondence entry for the piece ${piece}.`);
+  }
+  return correspondenceEntry.possibleMatrices;
+}
+
+export type PossibleShape = {
+  rotations: number[];
+  mirrored: boolean[];
+  matrix: number[][];
+};
