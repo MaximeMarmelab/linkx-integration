@@ -3,9 +3,12 @@ export type Move = {
   color: Color;
   piece?: Piece;
   column?: number;
-  rotation?: 0 | 1 | 2 | 3;
+  rotation?: Rotation;
   mirrored?: boolean;
 };
 
 export type Color = "white" | "blue";
 export type Piece = "1" | "2" | "3I" | "3L" | "4S" | "4T" | "4L";
+export type Rotation = 0 | 1 | 2 | 3;
+
+export const POSSIBLE_PIECES = ["1", "2", "3I", "3L", "4S", "4T", "4L"];

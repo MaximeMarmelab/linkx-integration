@@ -1,4 +1,10 @@
-import type { Color, Move } from "../game/move.ts";
+import {
+  POSSIBLE_PIECES,
+  type Color,
+  type Move,
+  type Piece,
+  type Rotation,
+} from "../game/move.ts";
 
 /**
  * Transform a string describing the state of the game into an ordered array of moves.
@@ -31,7 +37,7 @@ export function parseSingularMove(color: Color, moveInput: string) {
     return {
       skipped: true,
       color,
-    } as Move;
+    } satisfies Move;
   }
 
   return {
@@ -41,10 +47,10 @@ export function parseSingularMove(color: Color, moveInput: string) {
     column: extractColumn(moveInput),
     rotation: extractRotation(moveInput),
     mirrored: /m/i.test(moveInput),
-  } as Move;
+  } satisfies Move;
 }
 
-function extractPiece(moveInput: string): string {
+function extractPiece(moveInput: string): Piece {
   if (moveInput[0] === "1" || moveInput[0] === "2") {
     return moveInput[0];
   } else if (moveInput[0] === "3" || moveInput[0] === "4") {
@@ -53,15 +59,24 @@ function extractPiece(moveInput: string): string {
         `The move "${moveInput}" is too short and does not contains the required information.`,
       );
     }
-    return moveInput[0] + moveInput[1]?.toUpperCase();
+    const piece = moveInput[0] + moveInput[1]?.toUpperCase();
+    if (POSSIBLE_PIECES.includes(piece)) {
+      return piece as Piece;
+    }
   }
   throw new Error(`Piece ${moveInput[0]} not recognized.`);
 }
 
-function extractRotation(moveInput: string): number {
+function extractRotation(moveInput: string): Rotation {
   const rotationInput = moveInput.match(/r\d/i);
   if (rotationInput && rotationInput[0]) {
-    return Number.parseInt(rotationInput[0].charAt(1));
+    const rotationNumber = Number.parseInt(rotationInput[0].charAt(1));
+    if (Number.isNaN(rotationNumber)) {
+      throw new Error(
+        "The rotation is indicated by a 'r' followed by a number between 0 and 3.",
+      );
+    }
+    return (rotationNumber % 4) as Rotation;
   }
   return 0;
 }

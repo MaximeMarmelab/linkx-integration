@@ -64,12 +64,10 @@ function calculateMinimumHeightOfPiece(
 }
 
 function copyGridAndRemoveLastMove(state: Grid): Grid {
-  const newState: Grid = [];
-  state.forEach((col) => {
+  return state.map((col) => {
     const colWithoutLastMove = col.map((cell) => {
       return cell.toLowerCase();
     });
-    newState.push([...colWithoutLastMove]);
+    return [...colWithoutLastMove];
   });
-  return newState;
 }
