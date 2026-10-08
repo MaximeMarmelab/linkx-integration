@@ -13,6 +13,7 @@ export function displayGame(game: Game) {
   let rows = getGridAsStrings(game.grid);
   rows = addRemainingPiecesToRows(rows, game.availablePieces);
 
+  // Clear app console here (escape char)
   rows.forEach((row) => console.log(row));
 }
 

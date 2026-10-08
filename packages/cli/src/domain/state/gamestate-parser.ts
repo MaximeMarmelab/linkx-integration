@@ -1,4 +1,4 @@
-import type { Move } from "../game/move.ts";
+import type { Color, Move } from "../game/move.ts";
 
 /**
  * Transform a string describing the state of the game into an ordered array of moves.
@@ -17,28 +17,31 @@ export function parseSaveFile(input?: string): Array<Move> {
       // If Blue starts : first move is at index 0.
       // If White starts : first move is at index 1 (index 0 is the "W")
       const color = index % 2 === 0 ? "blue" : "white";
-
       if (moveInput.toUpperCase() === "W") {
         return undefined;
       }
 
-      if (moveInput === "--") {
-        return {
-          skipped: true,
-          color,
-        } as Move;
-      }
-
-      return {
-        skipped: false,
-        color,
-        piece: extractPiece(moveInput),
-        column: extractColumn(moveInput),
-        rotation: extractRotation(moveInput),
-        mirrored: /m/i.test(moveInput),
-      } as Move;
+      return parseSingularMove(color, moveInput);
     })
     .filter((m) => !!m); // Necessary to exclude the undefined value from the white start flag if present
+}
+
+export function parseSingularMove(color: Color, moveInput: string) {
+  if (moveInput === "--") {
+    return {
+      skipped: true,
+      color,
+    } as Move;
+  }
+
+  return {
+    skipped: false,
+    color,
+    piece: extractPiece(moveInput),
+    column: extractColumn(moveInput),
+    rotation: extractRotation(moveInput),
+    mirrored: /m/i.test(moveInput),
+  } as Move;
 }
 
 function extractPiece(moveInput: string): string {
