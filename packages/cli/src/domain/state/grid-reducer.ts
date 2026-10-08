@@ -1,6 +1,7 @@
 import type { Move } from "../game/move.ts";
 import type { Grid } from "./grid.ts";
 
+import { GRID_MAX_HEIGHT } from "../game/game.ts";
 import { getPieceShapeFromMove } from "../game/piece-shape-from-move.ts";
 
 export function gridReducer(state: Grid, action: Move): Grid {
@@ -24,6 +25,16 @@ export function gridReducer(state: Grid, action: Move): Grid {
     column.forEach((cell, yIndex) => {
       if (cell === 1) {
         const gridY = minimumHeight + yIndex;
+        if (gridX > 8) {
+          throw new Error(
+            "The given piece would be out of bonds through the right of the grid.",
+          );
+        }
+        if (gridY > 8) {
+          throw new Error(
+            "The given piece would be out of bonds through the top of the grid.",
+          );
+        }
 
         if (newState[gridX]) {
           newState[gridX][gridY] = action.color === "blue" ? "B" : "W"; // The last move is in uppercase letters
@@ -66,8 +77,13 @@ function calculateMinimumHeightOfPiece(
     columnIndex <= moveRightMostColumn;
     columnIndex++
   ) {
+    // Not finding the topMostCell means we are going out of bonds
+    const topMostCellIndex =
+      state[columnIndex]?.findIndex((cell) => cell === ".") ??
+      GRID_MAX_HEIGHT + 1;
     const topMostCell =
-      state[columnIndex]?.findIndex((cell) => cell === ".") ?? 8;
+      topMostCellIndex >= 0 ? topMostCellIndex : GRID_MAX_HEIGHT + 1;
+
     const pieceBottomCellForColumn =
       moveMatrix[columnIndex - moveLeftMostColumn]?.findIndex(
         (cell) => cell === 1,
