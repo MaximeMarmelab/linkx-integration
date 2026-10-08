@@ -12,3 +12,5 @@ export type PieceCount = {
   color: Color;
   count: number;
 };
+
+export const GRID_MAX_HEIGHT = 8;
