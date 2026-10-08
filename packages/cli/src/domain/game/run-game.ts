@@ -1,3 +1,5 @@
+import { randomInt } from "node:crypto";
+
 import type { Grid } from "../state/grid.ts";
 import type { Game, PieceCount } from "./game.ts";
 import type { Color, Move, Piece } from "./move.ts";
@@ -8,11 +10,17 @@ import { gridReducer } from "../state/grid-reducer.ts";
 
 export function runGame(stringifiedState?: string): Game {
   const moves = parseSaveFile(stringifiedState);
+  let turnOfPlayer: Color;
+  if (stringifiedState) {
+    turnOfPlayer = /^W/i.test(stringifiedState) ? "white" : "blue";
+  } else {
+    turnOfPlayer = randomInt(2) === 0 ? "blue" : "white";
+  }
+
   let game: Game = {
     grid: initGrid(),
     availablePieces: initAvailablePieces(),
-    turnOfPlayer:
-      stringifiedState && /^W/i.test(stringifiedState) ? "white" : "blue",
+    turnOfPlayer,
   };
 
   moves.forEach((move) => (game = gameReducer(game, move)));
