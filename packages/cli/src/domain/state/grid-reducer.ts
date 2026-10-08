@@ -19,9 +19,10 @@ export function gridReducer(state: Grid, action: Move): Grid {
   );
 
   pieceShape.forEach((column, xIndex) => {
+    const gridX = moveLeftMostColumn + xIndex;
+
     column.forEach((cell, yIndex) => {
       if (cell === 1) {
-        const gridX = moveLeftMostColumn + xIndex;
         const gridY = minimumHeight + yIndex;
 
         if (newState[gridX]) {
@@ -29,6 +30,22 @@ export function gridReducer(state: Grid, action: Move): Grid {
         }
       }
     });
+
+    const blocksBelowPiece = state[gridX]?.splice(0, minimumHeight) ?? [];
+    const blocksWithinPiece =
+      state[gridX]?.splice(minimumHeight, minimumHeight + column.length) ?? [];
+    const blockFloatingWithinPiece = hasBlockFloatingWithinPieceCol(
+      blocksWithinPiece,
+      gridX + 1,
+    );
+    if (
+      blocksBelowPiece.find((cell) => cell === ".") ||
+      blockFloatingWithinPiece
+    ) {
+      throw new Error(
+        `The proposed piece would be floating in column ${gridX + 1}.`,
+      );
+    }
   });
 
   return newState;
@@ -69,4 +86,17 @@ function copyGridAndRemoveLastMove(state: Grid): Grid {
       return cell.toLowerCase();
     });
   });
+}
+
+function hasBlockFloatingWithinPieceCol(
+  blocksWithinPiece: string[],
+  columnIndex: number,
+) {
+  let hasSupport = true;
+  for (let cell of blocksWithinPiece) {
+    if (!hasSupport && cell !== ".") {
+      throw new Error(`The piece would be floating in column ${columnIndex}`);
+    }
+    hasSupport = cell !== ".";
+  }
 }

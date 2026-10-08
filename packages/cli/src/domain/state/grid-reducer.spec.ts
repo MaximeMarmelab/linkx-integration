@@ -112,4 +112,41 @@ describe("grid-reducer", () => {
     expect(grid[5]?.at(0)).toBe("B");
     expect(grid[5]?.at(1)).toBe("B");
   });
+
+  it("should throw when a piece is partially floating", () => {
+    const move: Move = {
+      skipped: false,
+      color: "blue",
+      piece: "4L",
+      column: 1,
+      rotation: 0,
+      mirrored: false,
+    };
+
+    const firstMove: Move = {
+      skipped: false,
+      color: "blue",
+      piece: "4T",
+      column: 1,
+      rotation: 0,
+      mirrored: false,
+    };
+    const secondMove: Move = {
+      skipped: false,
+      color: "blue",
+      piece: "3I",
+      column: 1,
+      rotation: 0,
+      mirrored: false,
+    };
+
+    expect(() => {
+      const firstStep = gridReducer(emptyGrid, firstMove);
+      gridReducer(firstStep, secondMove);
+    }).toThrow("floating");
+
+    expect(() => {
+      console.table(gridReducer(emptyGrid, move));
+    }).toThrow("floating");
+  });
 });
