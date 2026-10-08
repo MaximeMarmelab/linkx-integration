@@ -13,7 +13,7 @@ export function displayGame(game: Game) {
   let rows = getGridAsStrings(game.grid);
   rows = addRemainingPiecesToRows(rows, game.availablePieces);
 
-  // Clear app console here (escape char)
+  console.clear();
   rows.forEach((row) => console.log(row));
 }
 
@@ -46,7 +46,7 @@ function addRemainingPiecesToRows(
 ): Array<string> {
   const updatedRows = [
     ...rows,
-    "0 1 2 3 4 5 6 7 8  ",
+    "1 2 3 4 5 6 7 8 9  ",
     "                   ",
     "                   ",
     "                   ",
@@ -77,7 +77,7 @@ function addRemainingPiecesToRows(
   );
 
   updatedRows[0] += `   ${chalk.blueBright("BLUE")} stock:  ${blueTotal} pieces`;
-  updatedRows[1] += `    1       2       3       4       5       6       7`;
+  updatedRows[1] += `    1       2       3I      3L      4S      4T      4L`;
   bluePiecesStrings.forEach((str, index) => {
     updatedRows[2 + index] += str;
   });
@@ -87,7 +87,7 @@ function addRemainingPiecesToRows(
   );
 
   updatedRows[7] += `   ${chalk.white("WHITE")} stock:  ${whiteTotal} pieces`;
-  updatedRows[8] += `    1       2       3       4       5       6       7`;
+  updatedRows[8] += `    1       2       3I      3L      4S      4T      4L`;
   whitePiecesStrings.forEach((str, index) => {
     updatedRows[9 + index] += str;
   });
@@ -137,10 +137,14 @@ function generateAvailablePiecesStrings(
 
 function stringCellToChalkDisplay(cell: string): string {
   switch (cell) {
-    case "W":
+    case "w":
       return chalk.bgWhite("  ");
-    case "B":
+    case "b":
       return chalk.bgBlueBright("  ");
+    case "W":
+      return chalk.bgWhite.black("◀▶");
+    case "B":
+      return chalk.bgBlueBright.black("◀▶");
     case ".":
     default:
       return chalk.grey("⚬ ");

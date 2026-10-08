@@ -46,12 +46,11 @@ describe("grid-reducer", () => {
     const grid = gridReducer(firstStep, secondMove);
 
     expect(grid).toBeTruthy();
-    console.table(grid);
     expect(grid[6]?.at(1)).toBe(".");
-    expect(grid[7]?.at(0)).toBe("B");
+    expect(grid[7]?.at(0)).toBe("b");
     expect(grid[7]?.at(1)).toBe("W");
-    expect(grid[8]?.at(0)).toBe("B");
-    expect(grid[8]?.at(1)).toBe("B");
+    expect(grid[8]?.at(0)).toBe("b");
+    expect(grid[8]?.at(1)).toBe("b");
     // ......BW.
     // ......BBB
   });
@@ -77,7 +76,6 @@ describe("grid-reducer", () => {
     grid = gridReducer(grid, secondMove);
 
     expect(grid).toBeTruthy();
-    console.table(grid);
     expect(grid[6]?.at(0)).toBe("B");
     expect(grid[6]?.at(1)).toBe("B");
     expect(grid[7]?.at(1)).toBe("B");
@@ -106,10 +104,10 @@ describe("grid-reducer", () => {
     const grid = gridReducer(firstStep, secondMove);
 
     expect(grid).toBeTruthy();
-    expect(grid[2]?.at(0)).toBe("W");
-    expect(grid[3]?.at(0)).toBe("W");
-    expect(grid[3]?.at(1)).toBe("W");
-    expect(grid[4]?.at(0)).toBe("W");
+    expect(grid[2]?.at(0)).toBe("w");
+    expect(grid[3]?.at(0)).toBe("w");
+    expect(grid[3]?.at(1)).toBe("w");
+    expect(grid[4]?.at(0)).toBe("w");
     expect(grid[4]?.at(1)).toBe("B");
     expect(grid[5]?.at(0)).toBe("B");
     expect(grid[5]?.at(1)).toBe("B");
