@@ -89,26 +89,18 @@ function getAdjacencies(
   gridY: number,
   isBlockOfSameColor: Function,
 ): Adjacencies | null {
-  const blockAboveTag = getNodeTag(gridX, gridY + 1);
-  const blockOnRightTag = getNodeTag(gridX + 1, gridY);
-  const blockAboveAndOnRightTag = getNodeTag(gridX + 1, gridY + 1);
-  const blockBelowAndOnRightTag = getNodeTag(gridX + 1, gridY - 1);
-
   const adjacencies: Adjacencies = {
     sourceTag: getNodeTag(gridX, gridY),
     targetNodes: {},
   };
-  if (isAdjacent(grid, gridX, gridY + 1, isBlockOfSameColor)) {
-    adjacencies.targetNodes[blockAboveTag] = 1;
-  }
-  if (isAdjacent(grid, gridX + 1, gridY, isBlockOfSameColor)) {
-    adjacencies.targetNodes[blockOnRightTag] = 1;
-  }
-  if (isAdjacent(grid, gridX + 1, gridY + 1, isBlockOfSameColor)) {
-    adjacencies.targetNodes[blockAboveAndOnRightTag] = 1;
-  }
-  if (isAdjacent(grid, gridX + 1, gridY - 1, isBlockOfSameColor)) {
-    adjacencies.targetNodes[blockBelowAndOnRightTag] = 1;
+  for (let x = gridX - 1; x <= gridX + 1; x++) {
+    for (let y = gridY - 1; y <= gridY + 1; y++) {
+      const col = grid[x];
+      if (col && col[y] && isAdjacent(grid, x, y, isBlockOfSameColor)) {
+        const nodeTag = getNodeTag(x, y);
+        adjacencies.targetNodes[nodeTag] = 1;
+      }
+    }
   }
   if (gridX === GRID_MAX_HEIGHT) {
     adjacencies.targetNodes[SIDE_RIGHT] = 1;
