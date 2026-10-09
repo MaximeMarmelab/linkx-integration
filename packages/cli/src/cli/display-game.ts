@@ -18,6 +18,14 @@ export function displayGame(game: Game) {
 
   console.clear();
   rows.forEach((row) => console.log(row));
+
+  if (game.victory) {
+    const color =
+      game.turnOfPlayer === "blue"
+        ? chalk.blueBright(game.turnOfPlayer)
+        : chalk.white(game.turnOfPlayer);
+    console.log(`Victory of the player ${color} ! Congratulations !`);
+  }
 }
 
 /**

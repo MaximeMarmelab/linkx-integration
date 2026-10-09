@@ -5,6 +5,7 @@ import type { Game, PieceCount } from "./game.ts";
 import type { Color, Move, Piece } from "./move.ts";
 
 import { availablePiecesReducer } from "../state/available-pieces-reducer.ts";
+import { detectVictory } from "../state/detect-victory.ts";
 import { parseSaveFile } from "../state/gamestate-parser.ts";
 import { gridReducer } from "../state/grid-reducer.ts";
 
@@ -21,6 +22,7 @@ export function runGame(stringifiedState?: string): Game {
     grid: initGrid(),
     availablePieces: initAvailablePieces(),
     turnOfPlayer,
+    victory: false,
   };
 
   return moves.reduce(gameReducer, game);
@@ -30,11 +32,15 @@ export function gameReducer(game: Game, move: Move): Game {
   if (move.color !== game.turnOfPlayer) {
     throw new Error("This is not your turn to play.");
   }
+  if (game.victory) {
+    throw new Error("This game has already been won.");
+  }
   return {
     grid: gridReducer(game.grid, move),
     availablePieces: availablePiecesReducer(game.availablePieces, move),
     turnOfPlayer: reverseColor(move.color),
     lastMove: move,
+    victory: detectVictory(game),
   };
 }
 

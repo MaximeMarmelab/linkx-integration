@@ -15,6 +15,12 @@ export function playThroughCli(rl: readline.Interface, game: Game) {
       ? chalk.blueBright(game.turnOfPlayer)
       : chalk.white(game.turnOfPlayer);
 
+  if (game.victory) {
+    displayGame(game);
+    rl.close();
+    return;
+  }
+
   if (getPossibleMoves(game).length === 0) {
     console.log(`Player ${color}: turn skipped due to lack of possible moves.`);
     const skipMove = {

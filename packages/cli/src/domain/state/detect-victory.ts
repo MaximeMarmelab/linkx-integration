@@ -1,0 +1,125 @@
+import Graph from "node-dijkstra";
+
+import type { Adjacencies, Grid } from "./grid.ts";
+
+import { GRID_MAX_HEIGHT, type Game } from "../game/game.ts";
+
+const SIDE_UP = "UP";
+const SIDE_DOWN = "DOWN";
+const SIDE_LEFT = "LEFT";
+const SIDE_RIGHT = "RIGHT";
+
+// TODO : switch from boolean to path + color in next ticket
+export function detectVictory(game: Game): boolean {
+  if (!game.lastMove || game.lastMove?.skipped) {
+    return false;
+  }
+
+  const color = game.lastMove.color;
+  const isBlockOfCurrentColor =
+    color === "blue"
+      ? (cell: string) => /b/i.test(cell)
+      : (cell: string) => /w/i.test(cell);
+
+  const route = new Graph();
+
+  const adjacenciesWithLeftEdge: Adjacencies = {
+    sourceTag: SIDE_LEFT,
+    targetNodes: {},
+  };
+  game.grid[0]?.forEach((cell, gridY) => {
+    if (isBlockOfCurrentColor(cell)) {
+      adjacenciesWithLeftEdge.targetNodes[getNodeTag(0, gridY)] = 1;
+    }
+  });
+  route.addNode(
+    adjacenciesWithLeftEdge.sourceTag,
+    adjacenciesWithLeftEdge.targetNodes,
+  );
+
+  const adjacenciesWithBottomEdge: Adjacencies = {
+    sourceTag: SIDE_DOWN,
+    targetNodes: {},
+  };
+  game.grid.forEach((column, gridX) => {
+    if (isBlockOfCurrentColor(column[0] ?? ".")) {
+      adjacenciesWithBottomEdge.targetNodes[getNodeTag(gridX, 0)] = 1;
+    }
+  });
+  route.addNode(
+    adjacenciesWithBottomEdge.sourceTag,
+    adjacenciesWithBottomEdge.targetNodes,
+  );
+
+  game.grid.forEach((column, gridX) => {
+    // Cannot use flatMap because we want to have specific keys
+    column.forEach((cell, gridY) => {
+      if (isBlockOfCurrentColor(cell)) {
+        const adjacencies = getAdjacencies(
+          game.grid,
+          gridX,
+          gridY,
+          isBlockOfCurrentColor,
+        );
+
+        if (adjacencies) {
+          route.addNode(adjacencies.sourceTag, adjacencies.targetNodes);
+        }
+      }
+    });
+  }, route);
+
+  return route.path(SIDE_LEFT, SIDE_RIGHT) || route.path(SIDE_DOWN, SIDE_UP);
+}
+
+function getAdjacencies(
+  grid: Grid,
+  gridX: number,
+  gridY: number,
+  isBlockOfSameColor: Function,
+): Adjacencies | null {
+  const blockAboveTag = getNodeTag(gridX, gridY + 1);
+  const blockOnRightTag = getNodeTag(gridX + 1, gridY);
+  const blockAboveAndOnRightTag = getNodeTag(gridX + 1, gridY + 1);
+
+  const adjacencies: Adjacencies = {
+    sourceTag: getNodeTag(gridX, gridY),
+    targetNodes: {},
+  };
+  if (isAdjacent(grid, gridX, gridY + 1, isBlockOfSameColor)) {
+    adjacencies.targetNodes[blockAboveTag] = 1;
+  }
+  if (isAdjacent(grid, gridX + 1, gridY, isBlockOfSameColor)) {
+    adjacencies.targetNodes[blockOnRightTag] = 1;
+  }
+  if (isAdjacent(grid, gridX + 1, gridY + 1, isBlockOfSameColor)) {
+    adjacencies.targetNodes[blockAboveAndOnRightTag] = 1;
+  }
+  if (gridX === GRID_MAX_HEIGHT) {
+    adjacencies.targetNodes[SIDE_RIGHT] = 1;
+  }
+  if (gridY === GRID_MAX_HEIGHT) {
+    adjacencies.targetNodes[SIDE_UP] = 1;
+  }
+
+  if (Object.entries(adjacencies.targetNodes).length === 0) {
+    return null;
+  }
+
+  return adjacencies;
+}
+
+function isAdjacent(
+  grid: Grid,
+  gridX: number,
+  gridY: number,
+  isBlockOfSameColor: Function,
+): boolean {
+  return (
+    grid[gridX] && grid[gridX][gridY] && isBlockOfSameColor(grid[gridX][gridY])
+  );
+}
+
+function getNodeTag(x: number, y: number): string {
+  return `${x}.${y}`;
+}
