@@ -1,7 +1,6 @@
 import chalk from "chalk";
 
 import type { Color } from "../domain/game/move.ts";
-import type { Grid } from "../domain/state/grid.ts";
 
 import {
   GRID_MAX_HEIGHT,
@@ -9,11 +8,12 @@ import {
   type PieceCount,
 } from "../domain/game/game.ts";
 import { getPieceShapeFromMove } from "../domain/game/piece-shape-from-move.ts";
+import { getNodeTag } from "../domain/state/detect-victory.ts";
 
 const PIECE_MAX_HEIGHT = 3;
 
 export function displayGame(game: Game) {
-  let rows = getGridAsStrings(game.grid);
+  let rows = getGridAsStrings(game);
   rows = addRemainingPiecesToRows(rows, game.availablePieces);
 
   console.clear();
@@ -31,16 +31,20 @@ export function displayGame(game: Game) {
 /**
  * Get an array of 9 strings (of length 9) that, once printed, display the current game grid.
  */
-export function getGridAsStrings(grid: Grid): Array<string> {
+export function getGridAsStrings(game: Game): Array<string> {
   const rows: Array<string> = [];
 
-  grid.forEach((column: Array<string>) => {
+  game.grid.forEach((column: Array<string>, x) => {
     column.forEach((cell, y) => {
       const relevantRow = GRID_MAX_HEIGHT - y;
       if (!rows[relevantRow]) {
         rows[relevantRow] = "";
       }
-      rows[relevantRow] += stringCellToChalkDisplay(cell);
+      if (game.victory && game.victory.includes(getNodeTag(x, y))) {
+        rows[relevantRow] += stringCellToChalkDisplay(cellToVictoryCell(cell));
+      } else {
+        rows[relevantRow] += stringCellToChalkDisplay(cell);
+      }
     });
   });
 
@@ -160,9 +164,21 @@ function stringCellToChalkDisplay(cell: string): string {
       return chalk.bgWhite.black("◀▶");
     case "B":
       return chalk.bgBlueBright.black("◀▶");
+    case "V": // Blue victory
+      return chalk.bgBlueBright.black("◖◗");
+    case "L": // White victory
+      return chalk.bgWhite.black("◖◗");
     case ".":
     default:
       return chalk.grey("⚬ ");
+  }
+}
+
+function cellToVictoryCell(cell: string): string {
+  if (/w/i.test(cell)) {
+    return "L";
+  } else {
+    return "V";
   }
 }
 
