@@ -28,13 +28,18 @@ if (inputPath) {
     console.error("Couldn't read file. " + err);
   }
 }
+try {
+  let game = runGame(fileContent);
+  displayGame(game);
 
-let game = runGame(fileContent);
-displayGame(game);
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-playThroughCli(rl, game);
+  playThroughCli(rl, game);
+} catch (err: any) {
+  console.error(
+    `The file given contains the following problem :\n${err.message}`,
+  );
+}
