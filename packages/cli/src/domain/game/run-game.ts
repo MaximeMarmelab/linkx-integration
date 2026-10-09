@@ -35,12 +35,14 @@ export function gameReducer(game: Game, move: Move): Game {
   if (game.victory) {
     throw new Error("This game has already been won.");
   }
+
+  const updatedGrid = gridReducer(game.grid, move);
   return {
-    grid: gridReducer(game.grid, move),
+    grid: updatedGrid,
     availablePieces: availablePiecesReducer(game.availablePieces, move),
     turnOfPlayer: reverseColor(move.color),
     lastMove: move,
-    victory: detectVictory(game),
+    victory: detectVictory(updatedGrid, move),
   };
 }
 
