@@ -10,7 +10,7 @@ const SIDE_LEFT = "LEFT";
 const SIDE_RIGHT = "RIGHT";
 
 // TODO : switch from boolean to path + color in next ticket
-export function detectVictory(game: Game): boolean {
+export function detectVictory(game: Game): string[] | false {
   if (!game.lastMove || game.lastMove?.skipped) {
     return false;
   }
@@ -69,7 +69,22 @@ export function detectVictory(game: Game): boolean {
     });
   }, route);
 
-  return route.path(SIDE_LEFT, SIDE_RIGHT) || route.path(SIDE_DOWN, SIDE_UP);
+  const pathOptions = { trim: true };
+
+  const leftToRightPath = route.path(SIDE_LEFT, SIDE_RIGHT, pathOptions);
+  const bottomToTopPath = route.path(SIDE_DOWN, SIDE_UP, pathOptions);
+  if (leftToRightPath || bottomToTopPath) {
+    console.table([leftToRightPath, bottomToTopPath]);
+  }
+  return leftToRightPath;
+  //  if (leftToRightPath) {
+  //    return leftToRightPath;
+  //  }
+  //  return route.path(SIDE_DOWN, SIDE_UP, pathOptions);
+}
+
+export function getNodeTag(x: number, y: number): string {
+  return `${x}.${y}`;
 }
 
 function getAdjacencies(
@@ -122,8 +137,4 @@ function isAdjacent(
   return (
     grid[gridX] && grid[gridX][gridY] && isBlockOfSameColor(grid[gridX][gridY])
   );
-}
-
-function getNodeTag(x: number, y: number): string {
-  return `${x}.${y}`;
 }
