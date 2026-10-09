@@ -173,6 +173,9 @@ catalogs:
     husky:
       specifier: ^9.1.7
       version: 9.1.7
+    node-dijkstra:
+      specifier: ^2.5.1
+      version: 2.5.1
     oxfmt:
       specifier: ^0.53.0
       version: 0.53.0
@@ -192,6 +195,10 @@ catalogs:
 importers:
 
   .:
+    dependencies:
+      node-dijkstra:
+        specifier: 'catalog:'
+        version: 2.5.1
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -889,6 +896,9 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  node-dijkstra@2.5.1:
+    resolution: {integrity: sha512-0Nj8CRsQ5Y7BVuxODuIlPLb8rx0HbpLvNhwzSLxx85RBYUt3ntqwJ0xN3sm1/16su2OdwYH4bm4podGVzdB71g==}
+
   obug@2.2.1:
     resolution: {integrity: sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q==}
     engines: {node: '>=12.20.0'}
@@ -1414,6 +1424,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.6.0
 
   nanoid@3.3.19: {}
+
+  node-dijkstra@2.5.1: {}
 
   obug@2.2.1: {}
 
