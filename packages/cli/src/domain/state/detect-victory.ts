@@ -81,6 +81,7 @@ function getAdjacencies(
   const blockAboveTag = getNodeTag(gridX, gridY + 1);
   const blockOnRightTag = getNodeTag(gridX + 1, gridY);
   const blockAboveAndOnRightTag = getNodeTag(gridX + 1, gridY + 1);
+  const blockBelowAndOnRightTag = getNodeTag(gridX + 1, gridY - 1);
 
   const adjacencies: Adjacencies = {
     sourceTag: getNodeTag(gridX, gridY),
@@ -94,6 +95,9 @@ function getAdjacencies(
   }
   if (isAdjacent(grid, gridX + 1, gridY + 1, isBlockOfSameColor)) {
     adjacencies.targetNodes[blockAboveAndOnRightTag] = 1;
+  }
+  if (isAdjacent(grid, gridX + 1, gridY - 1, isBlockOfSameColor)) {
+    adjacencies.targetNodes[blockBelowAndOnRightTag] = 1;
   }
   if (gridX === GRID_MAX_HEIGHT) {
     adjacencies.targetNodes[SIDE_RIGHT] = 1;
