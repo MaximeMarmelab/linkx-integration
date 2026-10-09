@@ -1,3 +1,4 @@
+import { GRID_MAX_HEIGHT } from "../game/game.ts";
 import {
   POSSIBLE_PIECES,
   type Color,
@@ -84,7 +85,11 @@ function extractRotation(moveInput: string): Rotation {
 function extractColumn(moveInput: string): number {
   const columnChar = moveInput[moveInput.length - 1];
   if (columnChar && /\d/.test(columnChar)) {
-    return Number.parseInt(columnChar) - 1; // -1 to adjust between 0-starting index in js and 1-starting index in file
+    const inputedNumber = Number.parseInt(columnChar) - 1; // -1 to adjust between 0-starting index in js and 1-starting index in file
+    if (inputedNumber < 0 || inputedNumber > GRID_MAX_HEIGHT) {
+      throw new Error(`Column number ranges from 1 to ${GRID_MAX_HEIGHT + 1}`);
+    }
+    return inputedNumber;
   }
   throw new Error(
     "The last character of a move must be a number corresponding to the column in which the piece is played.",
