@@ -33,16 +33,31 @@ export function playThroughCli(rl: readline.Interface, game: Game) {
     return;
   }
 
-  rl.question(`Player ${color}: enter a move to play\n`, (answer) => {
-    try {
-      const parsedMove = parseSingularMove(game.turnOfPlayer, answer);
+  rl.question(
+    `Player ${color}: Enter a move to play\n` +
+      chalk.grey(
+        `Syntax: piece [rN with N = number of clockwise quarter turn] [m if mirrored] columnNumber\nExample: 3Lr16 will place a rotated-once 3L piece on column 6.\n`,
+      ),
+    (answer) => {
+      try {
+        if (answer.length === 0) {
+          throw new Error("You need to indicate a move to play.");
+        } else if (/ /.test(answer)) {
+          throw new Error(
+            "You can only specify one move at a time, without whitespaces.",
+          );
+        }
 
-      const updatedGame = gameReducer(game, parsedMove);
-      displayGame(updatedGame);
-      playThroughCli(rl, updatedGame);
-    } catch (err: any) {
-      console.log(err.message);
-      playThroughCli(rl, game); // Re-starting the turn
-    }
-  });
+        const parsedMove = parseSingularMove(game.turnOfPlayer, answer);
+
+        const updatedGame = gameReducer(game, parsedMove);
+        displayGame(updatedGame);
+        playThroughCli(rl, updatedGame);
+      } catch (err: any) {
+        displayGame(game);
+        console.log(chalk.red(err.message));
+        playThroughCli(rl, game); // Re-starting the turn
+      }
+    },
+  );
 }

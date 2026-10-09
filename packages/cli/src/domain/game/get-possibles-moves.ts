@@ -7,11 +7,11 @@ import { gameReducer } from "./run-game.ts";
 
 export function getPossibleMoves(game: Game): Move[] {
   const possibleColumns = Array.from(
-    { length: GRID_MAX_HEIGHT },
-    (_v, k) => k + 1,
+    { length: GRID_MAX_HEIGHT + 1 },
+    (_v, k) => k,
   ).filter(
     // Exclude full columns
-    (columnIndex) => game.grid[columnIndex]?.at(GRID_MAX_HEIGHT - 1) === ".",
+    (columnIndex) => game.grid[columnIndex]?.at(GRID_MAX_HEIGHT) === ".",
   );
 
   return game.availablePieces
