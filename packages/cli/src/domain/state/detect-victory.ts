@@ -1,8 +1,9 @@
 import Graph from "node-dijkstra";
 
+import type { Move } from "../game/move.ts";
 import type { Adjacencies, Grid } from "./grid.ts";
 
-import { GRID_MAX_HEIGHT, type Game } from "../game/game.ts";
+import { GRID_MAX_HEIGHT } from "../game/game.ts";
 
 const SIDE_UP = "UP";
 const SIDE_DOWN = "DOWN";
@@ -10,12 +11,12 @@ const SIDE_LEFT = "LEFT";
 const SIDE_RIGHT = "RIGHT";
 
 // TODO : switch from boolean to path + color in next ticket
-export function detectVictory(game: Game): string[] | false {
-  if (!game.lastMove || game.lastMove?.skipped) {
+export function detectVictory(grid: Grid, lastMove: Move): false | string[] {
+  if (!lastMove || lastMove?.skipped) {
     return false;
   }
 
-  const color = game.lastMove.color;
+  const color = lastMove.color;
   const isBlockOfCurrentColor =
     color === "blue"
       ? (cell: string) => /b/i.test(cell)
@@ -27,7 +28,7 @@ export function detectVictory(game: Game): string[] | false {
     sourceTag: SIDE_LEFT,
     targetNodes: {},
   };
-  game.grid[0]?.forEach((cell, gridY) => {
+  grid[0]?.forEach((cell, gridY) => {
     if (isBlockOfCurrentColor(cell)) {
       adjacenciesWithLeftEdge.targetNodes[getNodeTag(0, gridY)] = 1;
     }
@@ -41,7 +42,7 @@ export function detectVictory(game: Game): string[] | false {
     sourceTag: SIDE_DOWN,
     targetNodes: {},
   };
-  game.grid.forEach((column, gridX) => {
+  grid.forEach((column, gridX) => {
     if (isBlockOfCurrentColor(column[0] ?? ".")) {
       adjacenciesWithBottomEdge.targetNodes[getNodeTag(gridX, 0)] = 1;
     }
@@ -51,12 +52,12 @@ export function detectVictory(game: Game): string[] | false {
     adjacenciesWithBottomEdge.targetNodes,
   );
 
-  game.grid.forEach((column, gridX) => {
+  grid.forEach((column, gridX) => {
     // Cannot use flatMap because we want to have specific keys
     column.forEach((cell, gridY) => {
       if (isBlockOfCurrentColor(cell)) {
         const adjacencies = getAdjacencies(
-          game.grid,
+          grid,
           gridX,
           gridY,
           isBlockOfCurrentColor,
@@ -72,15 +73,10 @@ export function detectVictory(game: Game): string[] | false {
   const pathOptions = { trim: true };
 
   const leftToRightPath = route.path(SIDE_LEFT, SIDE_RIGHT, pathOptions);
-  const bottomToTopPath = route.path(SIDE_DOWN, SIDE_UP, pathOptions);
-  if (leftToRightPath || bottomToTopPath) {
-    console.table([leftToRightPath, bottomToTopPath]);
+  if (leftToRightPath) {
+    return leftToRightPath;
   }
-  return leftToRightPath;
-  //  if (leftToRightPath) {
-  //    return leftToRightPath;
-  //  }
-  //  return route.path(SIDE_DOWN, SIDE_UP, pathOptions);
+  return route.path(SIDE_DOWN, SIDE_UP, pathOptions);
 }
 
 export function getNodeTag(x: number, y: number): string {

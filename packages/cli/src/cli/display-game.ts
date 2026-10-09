@@ -21,9 +21,9 @@ export function displayGame(game: Game) {
 
   if (game.victory) {
     const color =
-      game.turnOfPlayer === "blue"
-        ? chalk.blueBright(game.turnOfPlayer)
-        : chalk.white(game.turnOfPlayer);
+      game.lastMove?.color === "blue"
+        ? chalk.blueBright(game.lastMove?.color)
+        : chalk.white(game.lastMove?.color);
     console.log(`Victory of the player ${color} ! Congratulations !`);
   }
 }
